@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src *">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src *">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <title>Spice External Client</title>
+
+
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h5 class="my-0 mr-md-auto font-weight-normal">Spice Client</h5>
+</div>
+
+  </head>
+  <body class="text-center">
+    <div class="container">
+
+
+
+      <div class="form-group">
+        <label for="spiceURI">Enter Spice Connectin URI address</label>
+        <input type="text" class="form-control" id="spiceURI" placeholder="localhost:5900">
+      </div>
+      <button class="btn btn-primary" id="spiceBtn">Open spice session</button>
+
+
+
+</div>
+    <script src="index.js"></script>
+    <script src="../renderer.js"></script>
+  </body>
+</html>

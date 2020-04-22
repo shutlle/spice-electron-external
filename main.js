@@ -18,7 +18,7 @@ const brokersData = new DataStore({ name: 'brokers-config' })
 
 
 function main () {
-  // todo list window
+  // brokers list window
   let mainWindow = new Window({
     file: path.join('src', 'index.html')
   })
@@ -26,8 +26,6 @@ function main () {
 
   // add broker window
   let addNewBrokerWindow
-
-  // TODO: put these events into their own file
 
 
   // initialize with brokers
@@ -37,9 +35,9 @@ function main () {
 
   // create add new broker window
   ipcMain.on('add-new-broker-window', () => {
-    // if addTodoWin does not already exist
+    // if addNewBrokerWindow does not already exist
     if (!addNewBrokerWindow) {
-      // create a new add todo window
+      // create a new add broker window
       addNewBrokerWindow = new Window({
         file: path.join('src', 'add.html'),
         width: 400,

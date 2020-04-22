@@ -34,7 +34,7 @@ class DataStore extends Store {
 
   deleteBroker (broker) {
     // filter out the target broker
-    this.brokers = this.brokers.filter(t => t !== broker)
+    this.brokers = this.brokers.filter(t => t.id !== broker)
 
     return this.saveBrokers()
   }

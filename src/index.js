@@ -2,18 +2,22 @@ const electron = require('electron')
 const spiceBtn = document.getElementById('spiceBtn')
 const { ipcRenderer } = require('electron')
 
-// create add todo window button
+// create add new broker window button
 document.getElementById('addNewBroker').addEventListener('click', () => {
   ipcRenderer.send('add-new-broker-window')
 })
 
 const deleteBroker = (e) => {
-  console.log(e.target)
-  ipcRenderer.send('delete-broker', e.target.textContent)
+  var t = e.target
+  while(t && !t.id) t = t.parentNode
+  if(t) {
+    console.log(t.id)
+    ipcRenderer.send('delete-broker', t.id)
+  }
 }
 
 
-// on receive todos
+// on receive brokers
 ipcRenderer.on('brokers', (event, brokers) => {
   // get the brokerList ul
   const brokerList = document.getElementById('brokerList')
@@ -27,12 +31,12 @@ ipcRenderer.on('brokers', (event, brokers) => {
     return html
   }, '')
 
-  // set list html to the todo items
+  // set list html to the broker items
   brokerList.innerHTML = brokerItems
 
   // add click handlers to delete the clicked broker
   brokerList.querySelectorAll('.list-group-item-action').forEach(item => {
-    item.addEventListener('click', deleteBroker)
+    item.addEventListener('contextmenu', deleteBroker)
   })
 })
 

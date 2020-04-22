@@ -15,3 +15,6 @@ npm install
 ```
 npm start
 ```
+
+![Image description](https://github.com/shutlle/spice-electron-external/raw/master/pics/spice-client.png)
+![Image description](https://github.com/shutlle/spice-electron-external/raw/master/pics/spice-client-broker-add.png)

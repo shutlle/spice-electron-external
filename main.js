@@ -23,8 +23,9 @@ function main () {
     file: path.join('src', 'index.html')
   })
 
-  // add todo window
-  let addTodoWin
+
+  // add broker window
+  let addNewBrokerWindow
 
   // TODO: put these events into their own file
 
@@ -37,35 +38,36 @@ function main () {
   // create add new broker window
   ipcMain.on('add-new-broker-window', () => {
     // if addTodoWin does not already exist
-    if (!addTodoWin) {
+    if (!addNewBrokerWindow) {
       // create a new add todo window
-      addTodoWin = new Window({
+      addNewBrokerWindow = new Window({
         file: path.join('src', 'add.html'),
         width: 400,
         height: 300,
-        // close with the main window
+        alwaysOnTop: true,
         parent: mainWindow
       })
+      addNewBrokerWindow.setMenu(null)
 
       // cleanup
-      addTodoWin.on('closed', () => {
-        addTodoWin = null
+      addNewBrokerWindow.on('closed', () => {
+        addNewBrokerWindow = null
       })
     }
   })
 
   // from add broker window
-  ipcMain.on('new-broker', (event, todo) => {
-    const updatedTodos = brokersData.addBroker(todo).brokers
+  ipcMain.on('new-broker', (event, broker) => {
+    const updatedBrokers = brokersData.addBroker(broker).brokers
 
-    mainWindow.send('brokers', updatedTodos)
+    mainWindow.send('brokers', updatedBrokers)
   })
 
-  // delete-broker from todo list window
-  ipcMain.on('delete-broker', (event, todo) => {
-    const updatedTodos = brokersData.deleteBroker(todo).brokers
-
-    mainWindow.send('brokers', updatedTodos)
+  // delete broker from brokers list window
+  ipcMain.on('delete-broker', (event, broker) => {
+    const updatedBrokers = brokersData.deleteBroker(broker).brokers
+    console.log(broker)
+    mainWindow.send('brokers', updatedBrokers)
   })
 
   var menu = Menu.buildFromTemplate([

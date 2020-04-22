@@ -25,16 +25,16 @@ class DataStore extends Store {
     return this
   }
 
-  addBroker (todo) {
-    // merge the existing brokers with the new todo
-    this.brokers = [ ...this.brokers, todo ]
+  addBroker (broker) {
+    // merge the existing brokers with the new broker
+    this.brokers = [ ...this.brokers, broker ]
 
     return this.saveBrokers()
   }
 
-  deleteBroker (todo) {
-    // filter out the target todo
-    this.brokers = this.brokers.filter(t => t !== todo)
+  deleteBroker (broker) {
+    // filter out the target broker
+    this.brokers = this.brokers.filter(t => t !== broker)
 
     return this.saveBrokers()
   }

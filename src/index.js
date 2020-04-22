@@ -8,6 +8,7 @@ document.getElementById('addNewBroker').addEventListener('click', () => {
 })
 
 const deleteBroker = (e) => {
+  console.log(e.target)
   ipcRenderer.send('delete-broker', e.target.textContent)
 }
 
@@ -19,7 +20,9 @@ ipcRenderer.on('brokers', (event, brokers) => {
 
   // create html string
   const brokerItems = brokers.reduce((html, broker) => {
-    html += `<li class="list-group-item list-group-item-action">${broker}</button>`
+    html += `<button id=${broker.id} class="list-group-item list-group-item-action">
+    <h3 class="display-4">${broker.name}
+    <small class="text-muted">${broker.address}</small></h3></button>`
 
     return html
   }, '')

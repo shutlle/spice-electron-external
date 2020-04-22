@@ -1,83 +1,116 @@
-// Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu} = require('electron')
+'use strict'
+
 const path = require('path')
+const {app, BrowserWindow, Menu, ipcMain} = require('electron')
 const shell = require('electron').shell
 
-const spiceClientURL = 'http://localhost/spice-web-client/index.html?host=192.168.43.111&port=5999'
+const Window = require('./Window')
+const DataStore = require('./DataStore')
+
+//const spiceClientURL = 'http://localhost/spice-web-client/index.html?host=192.168.43.111&port=5999'
+
+require('electron-reload')(__dirname)
 
 
+// create a store name for new brokers
+//path: c:\Users\Рамис\AppData\Roaming\spice-client\
+const brokersData = new DataStore({ name: 'brokers-config' })
 
-function createWindow () {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true
+
+function main () {
+  // todo list window
+  let mainWindow = new Window({
+    file: path.join('src', 'index.html')
+  })
+
+  // add todo window
+  let addTodoWin
+
+  // TODO: put these events into their own file
+
+
+  // initialize with brokers
+  mainWindow.once('show', () => {
+    mainWindow.webContents.send('brokers', brokersData.brokers)
+  })
+
+  // create add new broker window
+  ipcMain.on('add-new-broker-window', () => {
+    // if addTodoWin does not already exist
+    if (!addTodoWin) {
+      // create a new add todo window
+      addTodoWin = new Window({
+        file: path.join('src', 'add.html'),
+        width: 400,
+        height: 300,
+        // close with the main window
+        parent: mainWindow
+      })
+
+      // cleanup
+      addTodoWin.on('closed', () => {
+        addTodoWin = null
+      })
     }
   })
 
-  // and load the index.html of the app.
-  mainWindow.loadFile('src/index.html')
-  mainWindow.webContents.openDevTools()
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // from add broker window
+  ipcMain.on('new-broker', (event, todo) => {
+    const updatedTodos = brokersData.addBroker(todo).brokers
+
+    mainWindow.send('brokers', updatedTodos)
+  })
+
+  // delete-broker from todo list window
+  ipcMain.on('delete-broker', (event, todo) => {
+    const updatedTodos = brokersData.deleteBroker(todo).brokers
+
+    mainWindow.send('brokers', updatedTodos)
+  })
+
   var menu = Menu.buildFromTemplate([
-      {
-          label: 'Menu',
-          submenu: [
-              {
-                label:'Yandex',
-                click() { 
-                  shell.openExternal('http://ya.ru')
-                },
-                accelerator: 'CmdOrCtrl+Shift+Y'
-              },
-              {
-                label:'Spice Web Client',
-                click() { 
-                  shell.openExternal(spiceClientURL)
-                },
-                accelerator: 'CmdOrCtrl+Shift+S'
-              },
-              {type:'separator'},
-              {
-                label:'Exit',
-                click() { 
-                    app.quit() 
-                }
-              }
-          ]
-      },
-      {
-          label: 'Info'
-      }
+    {
+      label: 'Menu',
+      submenu: [
+        {
+          label:'Yandex',
+          click() { 
+            shell.openExternal('http://ya.ru')
+          },
+          accelerator: 'CmdOrCtrl+Shift+Y'
+        },
+        {
+          label:'Spice Web Client',
+          click() { 
+            shell.openExternal(spiceClientURL)
+          },
+          accelerator: 'CmdOrCtrl+Shift+S'
+        },
+        {type:'separator'},
+        {
+          label:'Exit',
+          click() { 
+              app.quit() 
+          }
+        }
+      ]
+    },
+    {
+      label: 'Info'
+    }
   ])
   Menu.setApplicationMenu(menu); 
-
-
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
 
-// Quit when all windows are closed.
+app.on('ready', main)
+
 app.on('window-all-closed', function () {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') app.quit()
 })
 
 app.on('activate', function () {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';

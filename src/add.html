@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Add Broker</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h3 class="text-center">Add new broker</h3>
+
+          <form id="newBroker">
+            <div class="form-group">
+              <label for="broker-name">Set name for new broker</label>
+              <input type="text" class="form-control" name="broker-address" placeholder="My broker">
+            </div>
+            <div class="form-group">
+              <label for="broker-address">Enter broker URI address</label>
+              <input type="text" class="form-control" name="broker-address" placeholder="https://vdi.tionix.ru">
+            </div>
+            <button class="btn btn-primary" id="addBrokerBtn">Add Broker</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="./add.js"></script>
+  </body>
+
+</html>

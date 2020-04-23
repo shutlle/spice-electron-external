@@ -1,7 +1,7 @@
 'use strict'
 
 const path = require('path')
-const {app, BrowserWindow, Menu, ipcMain} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron')
 const shell = require('electron').shell
 
 const Window = require('./Window')
@@ -57,14 +57,12 @@ function main () {
   // from add broker window
   ipcMain.on('new-broker', (event, broker) => {
     const updatedBrokers = brokersData.addBroker(broker).brokers
-
     mainWindow.send('brokers', updatedBrokers)
   })
 
   // delete broker from brokers list window
   ipcMain.on('delete-broker', (event, broker) => {
     const updatedBrokers = brokersData.deleteBroker(broker).brokers
-    console.log(broker)
     mainWindow.send('brokers', updatedBrokers)
   })
 
@@ -99,7 +97,7 @@ function main () {
       label: 'Info'
     }
   ])
-  Menu.setApplicationMenu(menu); 
+  Menu.setApplicationMenu(menu);
 }
 
 

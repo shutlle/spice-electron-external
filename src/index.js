@@ -1,19 +1,35 @@
 const electron = require('electron')
 const spiceBtn = document.getElementById('spiceBtn')
 const { ipcRenderer } = require('electron')
+const { dialog } = require('electron').remote
+
+
 
 // create add new broker window button
 document.getElementById('addNewBroker').addEventListener('click', () => {
   ipcRenderer.send('add-new-broker-window')
 })
 
+// broker delete event function
 const deleteBroker = (e) => {
-  var t = e.target
-  while(t && !t.id) t = t.parentNode
-  if(t) {
-    console.log(t.id)
-    ipcRenderer.send('delete-broker', t.id)
+  const options  = {
+    type: 'question',
+    defaultId: 1,
+    title: 'Delete broker',
+    buttons: ["Yes","No"],
+    message: "Do you really want to delete this broker?"
   }
+  dialog.showMessageBox(options)
+  .then (result => {
+    if (result.response === 0) {
+      var t = e.target
+      while(t && !t.id) t = t.parentNode
+      if (t) {
+        //console.log(t.id)
+        ipcRenderer.send('delete-broker', t.id)
+      }
+    }
+  })
 }
 
 
@@ -63,6 +79,5 @@ spiceBtn.addEventListener('click', function (event) {
   launchChildProcess(spiceClientAppPath, parameters);
   console.log(spiceGuestURI);
 })
-
 
 

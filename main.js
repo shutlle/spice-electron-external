@@ -7,6 +7,8 @@ const shell = require('electron').shell
 const Window = require('./Window')
 const DataStore = require('./DataStore')
 
+const randomize = require('randomatic');
+
 //const spiceClientURL = 'http://localhost/spice-web-client/index.html?host=192.168.43.111&port=5999'
 
 require('electron-reload')(__dirname)
@@ -26,6 +28,7 @@ function main () {
 
   // add broker window
   let addNewBrokerWindow
+  let loginWindow
 
 
   // initialize with brokers
@@ -40,8 +43,8 @@ function main () {
       // create a new add broker window
       addNewBrokerWindow = new Window({
         file: path.join('src', 'add.html'),
-        width: 400,
-        height: 300,
+        width: 500,
+        height: 400,
         alwaysOnTop: true,
         parent: mainWindow
       })
@@ -53,6 +56,36 @@ function main () {
       })
     }
   })
+
+
+
+  // create login window
+  ipcMain.on('login-window', (event, broker) => {
+    if (!loginWindow) {
+      loginWindow = new Window({
+        file: path.join('src', 'login.html'),
+        width: 600,
+        height: 400,
+        alwaysOnTop: true,
+        parent: mainWindow
+      })
+      loginWindow.setMenu(null)
+    
+      // cleanup
+      loginWindow.on('closed', () => {
+        loginWindow = null
+      })
+    }
+
+    // send data about one broker to login window
+    loginWindow.once('show', () => {
+      const getOneBroker = brokersData.getBroker(broker).brokers_once
+      //const getOneBroker = randomize('0', 8)
+      loginWindow.webContents.send('get-broker', getOneBroker)
+    })
+  })
+
+
 
   // from add broker window
   ipcMain.on('new-broker', (event, broker) => {

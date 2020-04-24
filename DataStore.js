@@ -38,6 +38,13 @@ class DataStore extends Store {
 
     return this.saveBrokers()
   }
+  getBroker (broker) {
+    // get once object broker
+    this.brokers_once = this.brokers.filter(t => t.id == broker)
+
+    return this
+  }
+
 }
 
 module.exports = DataStore

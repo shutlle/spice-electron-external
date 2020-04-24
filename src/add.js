@@ -1,7 +1,7 @@
 'use strict'
 
 const { ipcRenderer } = require('electron')
-var randomize = require('randomatic');
+const randomize = require('randomatic');
 
 document.getElementById('newBroker').addEventListener('submit', (evt) => {
   // prevent default refresh functionality of forms

@@ -10,6 +10,15 @@ document.getElementById('addNewBroker').addEventListener('click', () => {
   ipcRenderer.send('add-new-broker-window')
 })
 
+const loginForm = (e) => {
+  var t = e.target
+  while(t && !t.id) t = t.parentNode
+  if (t) {
+    console.log(t.id)
+    ipcRenderer.send('login-window', t.id)
+  }
+}
+
 // broker delete event function
 const deleteBroker = (e) => {
   const options  = {
@@ -53,6 +62,10 @@ ipcRenderer.on('brokers', (event, brokers) => {
   // add click handlers to delete the clicked broker
   brokerList.querySelectorAll('.list-group-item-action').forEach(item => {
     item.addEventListener('contextmenu', deleteBroker)
+  })
+
+  brokerList.querySelectorAll('.list-group-item-action').forEach(item => {
+    item.addEventListener('click', loginForm)
   })
 })
 

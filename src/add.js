@@ -1,9 +1,14 @@
 'use strict'
 
-const { ipcRenderer } = require('electron')
-const randomize = require('randomatic');
+const electron = require('electron')
+const remote = electron.remote
+const { ipcRenderer } = electron
+const randomize = require('randomatic')
 
-document.getElementById('newBroker').addEventListener('submit', (evt) => {
+const cancelBtn = document.getElementById('cancelBtn')
+const newBrokerBtn = document.getElementById('newBroker')
+
+newBrokerBtn.addEventListener('submit', (evt) => {
   // prevent default refresh functionality of forms
   evt.preventDefault()
 
@@ -24,6 +29,11 @@ document.getElementById('newBroker').addEventListener('submit', (evt) => {
   // reset input
   nameBroker.value = ''
   addressBroker.value = ''
+
 })
 
 
+cancelBtn.addEventListener('click', function (event) {
+  var window = remote.getCurrentWindow();
+  window.close();
+})

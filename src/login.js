@@ -1,9 +1,22 @@
 'use strict'
 
-const { ipcRenderer } = require('electron')
+const electron = require('electron')
+const remote = electron.remote
+const { ipcRenderer } = electron
 
-document.getElementById('loginBtn').addEventListener('submit', (evt) => {
-  console.log("login")
+const cancelBtn = document.getElementById('cancelBtn')
+const loginBtn = document.getElementById('loginBtn')
+
+cancelBtn.addEventListener('click', function (event) {
+  var window = remote.getCurrentWindow()
+  window.close()
+})
+
+
+loginBtn.addEventListener('click', function (event) {
+  ipcRenderer.send('vm-list-window')
+  var window = remote.getCurrentWindow()
+  window.close()
 })
 
 
@@ -14,3 +27,5 @@ ipcRenderer.on('get-broker', (event, brokers) => {
   brokerAddress.value = brokers[0].address
 
 })
+
+

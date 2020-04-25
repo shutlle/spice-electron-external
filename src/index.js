@@ -1,11 +1,15 @@
-const electron = require('electron')
-const { ipcRenderer } = require('electron')
-const { dialog } = require('electron').remote
+'use strict'
 
+const electron = require('electron')
+const { ipcRenderer } = electron
+const { dialog } = electron.remote
+const { remote } = electron
+const path = require('path')
+const addNewBroker = document.getElementById('addNewBroker')
 
 
 // create add new broker window button
-document.getElementById('addNewBroker').addEventListener('click', () => {
+addNewBroker.addEventListener('click', () => {
   ipcRenderer.send('add-new-broker-window')
 })
 
@@ -71,4 +75,8 @@ ipcRenderer.on('brokers', (event, brokers) => {
 
 
 
-
+ipcRenderer.on('vm-load', () => {
+  var vmPageFile = path.join('src', 'vm.html')
+  var window = remote.getCurrentWindow()
+  window.loadFile(vmPageFile)
+})

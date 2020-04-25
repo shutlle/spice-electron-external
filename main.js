@@ -1,13 +1,15 @@
 'use strict'
 
+const electron = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
+
+const shell = electron.shell
 const path = require('path')
-const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron')
-const shell = require('electron').shell
+const randomize = require('randomatic')
 
 const Window = require('./Window')
 const DataStore = require('./DataStore')
 
-const randomize = require('randomatic');
 
 //const spiceClientURL = 'http://localhost/spice-web-client/index.html?host=192.168.43.111&port=5999'
 
@@ -15,7 +17,7 @@ require('electron-reload')(__dirname)
 
 
 // create a store name for new brokers
-//path: c:\Users\Рамис\AppData\Roaming\spice-client\
+//save path: c:\Users\<User>\AppData\Roaming\spice-client\
 const brokersData = new DataStore({ name: 'brokers-config' })
 
 
@@ -86,6 +88,11 @@ function main () {
     })
   })
 
+
+  // vm list load
+  ipcMain.on('vm-list-window', (event) => {
+    mainWindow.send('vm-load')
+  })
 
 
   // from add broker window

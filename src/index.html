@@ -5,40 +5,22 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src *">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src *">
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/theme1.css">
     <title>Spice External Client</title>
 
-
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <div class="p-3 px-md-4 mb-3 panel">
       <button type="button" class="btn btn-outline-primary" id="addNewBroker">Add Broker</button>
-
     </div>
 
   </head>
   <body>
-    <div class="container ">
-
+    <div class="container">
       <div class="row">
         <div class="col-12">
           <div class="list-group-flush" id="brokerList"></div>
         </div>
       </div>
-      
-      <br>   
-
-      <div class="row text-center">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="form-group">
-                <label for="spiceURI">Enter Spice Connectin URI address</label>
-                <input type="text" class="form-control" id="spiceURI" placeholder="localhost:5900">
-              </div>
-              <button class="btn btn-primary" id="spiceBtn">Open spice session</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
     
 
 

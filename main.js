@@ -26,9 +26,10 @@ function main () {
   })
 
 
-  // add broker window
+  // windows
   let addNewBrokerWindow
   let loginWindow
+  
 
 
   // initialize with brokers
@@ -43,7 +44,7 @@ function main () {
       // create a new add broker window
       addNewBrokerWindow = new Window({
         file: path.join('src', 'add.html'),
-        width: 500,
+        width: 600,
         height: 400,
         alwaysOnTop: true,
         parent: mainWindow
@@ -111,9 +112,9 @@ function main () {
           accelerator: 'CmdOrCtrl+Shift+Y'
         },
         {
-          label:'Spice Web Client',
+          label:'Direct Spice Session',
           click() { 
-            shell.openExternal(spiceClientURL)
+            openDirectSpiceSessionWindow()
           },
           accelerator: 'CmdOrCtrl+Shift+S'
         },
@@ -133,6 +134,24 @@ function main () {
   Menu.setApplicationMenu(menu);
 }
 
+function openDirectSpiceSessionWindow() {
+  let directSpiceSessionWindow
+  if (!directSpiceSessionWindow) {
+    // create a new add broker window
+    directSpiceSessionWindow = new Window({
+      file: path.join('src', 'spice.html'),
+      width: 600,
+      height: 400,
+      alwaysOnTop: false
+    })
+    directSpiceSessionWindow.setMenu(null)
+
+    // cleanup
+    directSpiceSessionWindow.on('closed', () => {
+      directSpiceSessionWindow = null
+    })
+  }
+}
 
 app.on('ready', main)
 

@@ -1,5 +1,4 @@
 const electron = require('electron')
-const spiceBtn = document.getElementById('spiceBtn')
 const { ipcRenderer } = require('electron')
 const { dialog } = require('electron').remote
 
@@ -10,11 +9,12 @@ document.getElementById('addNewBroker').addEventListener('click', () => {
   ipcRenderer.send('add-new-broker-window')
 })
 
+// login window event function
 const loginForm = (e) => {
   var t = e.target
   while(t && !t.id) t = t.parentNode
   if (t) {
-    console.log(t.id)
+    //console.log(t.id)
     ipcRenderer.send('login-window', t.id)
   }
 }
@@ -69,28 +69,6 @@ ipcRenderer.on('brokers', (event, brokers) => {
   })
 })
 
-function launchChildProcess(executablePath, parameters) {
-  var child = require('child_process').execFile;
-  child(executablePath, parameters, function(err, data) {
-    if(err){
-      console.error(err);
-      return;
-    }
-    console.log(data.toString());
-  });
-}
 
-spiceBtn.addEventListener('click', function (event) {
-  //https://www.mankier.com/1/remote-viewer
-  var spiceClientAppPath = "C:\\Program Files (x86)\\VirtViewer v8.0-256\\bin\\remote-viewer.exe";
-
-  var spiceGuestURI = document.getElementById('spiceURI').value
-  if (spiceGuestURI == '') {
-    spiceGuestURI = "localhost:5900";
-  }
-  var parameters = ['spice://'+spiceGuestURI, "--full-screen"];
-  launchChildProcess(spiceClientAppPath, parameters);
-  console.log(spiceGuestURI);
-})
 
 

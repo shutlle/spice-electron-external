@@ -16,7 +16,7 @@
     "electron": "^8.1.1"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "electron-reload": "^1.2.5",
     "electron-store": "^2.0.0",
     "spectre.css": "^0.5.3",
